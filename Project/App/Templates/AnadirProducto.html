@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block title %}Agregar Producto - Ravenclaw Store{% endblock %}
+
+{% block content %} 
+
+<section class="products">
+    <div class="container">
+        <div class="form-section">
+            <div class="form-header">
+                <h1>Agregar un Nuevo Producto</h1>
+                <p>Completa el formulario para añadir un nuevo artículo al catálogo</p>
+            </div>
+
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %} 
+            
+                <div class="form-group">
+                    <label for="nombre">Nombre de Producto <span class="required">*</span></label>
+                    <input type="text" id="nombre" name="nombre" placeholder="Ej: Poción de Verdad" required>
+                </div> 
+
+                <div class="form-group row-2">
+                    <div>
+                        <label for="cantidad">Cantidad <span class="required">*</span></label>
+                        <input type="number" id="cantidad" name="cantidad" placeholder="0" min="0" required>
+                    </div>  
+                    <div> 
+                        <label for="precio">Precio <span class="required">*</span></label>
+                        <input type="number" id="precio" name="precio" placeholder="0.00" min="0" step="0.01" required>
+                    </div>
+                </div>
+
+                <div class="form-group row-2">
+                    <div>
+                        <label for="rareza">Rareza <span class="required">*</span></label>
+                        <select id="rareza" name="rareza" required>
+                            <option value="">Selecciona una rareza</option>
+                            <option value="comun">Común</option>
+                            <option value="rara">Rara</option>
+                            <option value="epica">Épica</option>
+                            <option value="legendaria">Legendaria</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="fechaIngreso">Fecha de Ingreso <span class="required">*</span></label>
+                        <input type="date" id="fechaIngreso" name="fechaIngreso" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="Imagen">Imagen del Producto</label>
+                    <input type="file" id="Imagen" name="Imagen" accept="image/*" onchange="updateFileName(this)">
+                    <label for="Imagen" class="file-input-label">
+                        📸 Seleccionar Imagen
+                    </label>
+                    <div class="file-name" id="file-name"></div>
+                </div>
+
+                <div class="form-actions">
+                    <a href="{% url 'Productos' %}" class="button-cancel">Cancelar</a>
+                    <button type="submit" class="button-submit">Agregar Producto</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+<script>
+    function updateFileName(input) {
+        const fileNameDiv = document.getElementById('file-name');
+        if (input.files && input.files[0]) {
+            fileNameDiv.textContent = '✓ ' + input.files[0].name;
+            fileNameDiv.style.color = '#059669';
+        } else {
+            fileNameDiv.textContent = '';
+        }
+    }
+
+    // Set today's date as default
+    document.getElementById('fechaIngreso').valueAsDate = new Date();
+</script>
+
+{% endblock %}
+

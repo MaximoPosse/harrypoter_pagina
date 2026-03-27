@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+{% load static %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Ravenclaw Store{% endblock %}</title>
+    <!-- Fuentecitas de google :D -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    {% block extra_head %}{% endblock %}
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <div class="container nav-content">
+
+            <a href="{% url 'Home' %}" class="logo">
+                <img class="logo-icon" src="{% static 'src/Logo.png' %}" alt="" srcset="">
+                <span class="logo-text">Ravenclaw Store</span>
+            </a>
+
+            <div class="nav-links">
+                <a href="{% url 'Home' %}">Inicio</a>
+                <a href="{% url 'Productos' %}">Productos</a>
+                <a href="{% url 'AnadirProducto' %}" class="btn-primary">
+                    Agregar
+                </a>
+            </div>
+
+        </div>
+    </nav>
+
+    <main class="main">
+        {% block content %}{% endblock %}
+    </main>
+
+
+    <footer class="footer">
+        <div class="container footer-content">
+
+
+            <p class="footer-text">
+                &copy; 2026 Ravenclaw Store. Wit beyond measure is man's greatest treasure.
+            </p>
+
+        </div>
+    </footer> 
+
+    {% block extra_scripts %}{% endblock %} 
+</body>
+
+</html> 

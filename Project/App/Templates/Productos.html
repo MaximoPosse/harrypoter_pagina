@@ -1,0 +1,158 @@
+{% extends 'base.html' %}
+
+{% block title %}Productos - Ravenclaw Store{% endblock %}
+
+{% block content %}
+
+<section class="products">
+    <div class="container">
+
+        <div class="products-header">
+            <div>
+                <h1>Nuestros Productos</h1>
+                <p>Explora nuestra colección de artículos mágicos.</p>
+            </div>
+
+            <a href="{% url 'AnadirProducto' %}" class="btn-primary">
+                + Agregar Producto
+            </a>
+        </div>
+
+        <div class="filters">
+            <button class="filter active" id="TodosBtn" onclick="Todos()">Todos</button>
+            <button class="filter" id="ComunBtn" onclick="Comun()">Común</button>
+            <button class="filter" id="RaraBtn" onclick="Rara()">Rara</button>
+            <button class="filter" id="EpicaBtn" onclick="Epica()">Épica</button>
+            <button class="filter" id="LegendariaBtn" onclick="Legendaria()">Legendaria</button>
+        </div>
+
+        <div class="product-grid" id="Productos">
+
+            {% for product in products %}
+            <div class="product-card card-hover">
+                {% if product.Imagen %}
+                <img class="product-image" src="{{ product.Imagen.url }}" alt="" srcset="">
+                {% else %}
+                <div class="product-image">
+                    <p>Sin imagen</p>
+                </div>
+                {% endif %}
+
+                {% if product.Rareza == 'comun' %}
+                    <span class="tag gray rareza">Común</span>
+                {% elif product.Rareza == 'rara' %}
+                    <span class="tag blue rareza">Rara</span>
+                {% elif product.Rareza == 'epica' %}
+                    <span class="tag purple rareza">Épica</span>
+                {% elif product.Rareza == 'legendaria' %}
+                    <span class="tag gold rareza">Legendaria</span>
+                {% endif %}
+
+                <h3>{{ product.Nombre }}</h3>
+                <p class="clamp">{{ product.Descripcion }}</p>
+
+                <span class="date">{{ product.fechaIngreso }}</span>
+
+                <div class="product-footer">
+                    <span class="price">${{ product.Precio }}</span>
+                </div>
+
+            </div>
+
+            {% empty %}
+            <div class="empty-state">
+                <h3>No hay productos aún</h3>
+                <p>Comienza agregando tu primer producto.</p>
+
+                <a href="{% url 'AnadirProducto' %}" class="btn-primary">
+                    Agregar Producto
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+
+    </div>
+</section>
+
+<script>
+    let ProductosGrid = document.getElementById("Productos");
+    let ProductosChilds = Array.from(ProductosGrid.children);
+    let TodosBtn = document.getElementById("TodosBtn");
+    let ComunBtn = document.getElementById("ComunBtn");
+    let RaraBtn = document.getElementById("RaraBtn");
+    let EpicaBtn = document.getElementById("EpicaBtn");
+    let LegendariaBtn = document.getElementById("LegendariaBtn")
+    function DesactivarTodos()
+    {
+        TodosBtn.classList.remove("active");
+        ComunBtn.classList.remove("active");
+        RaraBtn.classList.remove("active");
+        EpicaBtn.classList.remove("active");
+        LegendariaBtn.classList.remove("active");
+    }
+    function Filtrar(Texto)
+    {
+        let filtrados = [];
+        for(let i = 0; i < ProductosChilds.length; i++)
+        {
+            let rarezaElemento = ProductosChilds[i].querySelector(".rareza");
+            if(!rarezaElemento)
+                continue; // Pa' que no salte error
+            let rareza = rarezaElemento.textContent;
+            if(rareza == Texto)
+                filtrados.push(ProductosChilds[i]);
+        }
+        return filtrados;
+    }
+    function Todos()
+    {
+        DesactivarTodos()
+        TodosBtn.classList.add("active");
+        ProductosGrid.innerHTML = "";
+        for(let i = 0; i < ProductosChilds.length; i++)
+            ProductosGrid.appendChild(ProductosChilds[i]);
+    }
+    function Comun()
+    {
+        DesactivarTodos()
+        ComunBtn.classList.add("active");
+        ProductosGrid.innerHTML = "";
+        let filtrados = Filtrar("Común")
+        for(let i = 0; i < filtrados.length; i++)
+            ProductosGrid.appendChild(filtrados[i]);
+    }
+    function Rara()
+    {
+        DesactivarTodos()
+        RaraBtn.classList.add("active");
+        ProductosGrid.innerHTML = "";
+        let filtrados = Filtrar("Rara")
+        for(let i = 0; i < filtrados.length; i++)
+            ProductosGrid.appendChild(filtrados[i]);
+    }
+    function Epica()
+    {
+        ProductosGrid.innerHTML = "";
+        DesactivarTodos()
+        EpicaBtn.classList.add("active");
+        let filtrados = Filtrar("Épica")
+        for(let i = 0; i < filtrados.length; i++)
+            ProductosGrid.appendChild(filtrados[i]);
+    }
+    function Legendaria()
+    {
+        ProductosGrid.innerHTML = "";
+        DesactivarTodos()
+        LegendariaBtn.classList.add("active");
+        let filtrados = Filtrar("Legendaria")
+        for(let i = 0; i < filtrados.length; i++)
+            ProductosGrid.appendChild(filtrados[i]);
+    }
+    Window.Todos = Todos;
+    Window.Comun = Comun;
+    Window.Rara = Rara;
+    Window.Epica = Epica;
+    Window.Legendaria = Legendaria;
+</script>
+
+{% endblock %}

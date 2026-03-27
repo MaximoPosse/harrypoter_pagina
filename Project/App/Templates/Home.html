@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+
+{% block title %}Inicio - Ravenclaw Store{% endblock %}
+
+{% block content %}
+
+<section class="hero">
+    <div class="container hero-content">
+
+        <span class="badge">Casa Ravenclaw</span>
+
+        <h1 class="hero-title">
+            Donde la sabiduría encuentra los mejores productos
+        </h1>
+
+        <p class="hero-text">
+            Explora nuestra colección exclusiva de pociones mágicas y escobas voladoras.
+            Cada producto ha sido cuidadosamente seleccionado para los más sabios.
+        </p>
+
+        <div class="hero-buttons">
+            <a href="{% url 'Productos' %}" class="btn-primary">
+                Ver Productos →
+            </a>
+
+            <a href="{% url 'AnadirProducto' %}" class="btn-outline">
+                Agregar Nuevo
+            </a>
+        </div>
+
+    </div>
+</section>
+
+<section class="values">
+    <div class="container values-grid">
+
+        <div class="value-card">
+            <div class="value-icon"></div>
+            <h3>Inteligencia</h3>
+            <p>Productos seleccionados con la sabiduría que caracteriza a nuestra casa.</p>
+        </div>
+
+        <div class="value-card">
+            <div class="value-icon"></div>
+            <h3>Conocimiento</h3>
+            <p>Cada producto viene con información detallada sobre su origen y uso.</p>
+        </div>
+
+        <div class="value-card">
+            <div class="value-icon"></div>
+            <h3>Creatividad</h3>
+            <p>Artículos únicos que despiertan la imaginación y el ingenio.</p>
+        </div>
+
+    </div>
+</section>
+
+<section class="featured">
+    <div class="container">
+
+        <div class="section-header">
+            <h2>Productos Destacados</h2>
+            <p>Descubre nuestra selección de pociones y escobas más populares.</p>
+        </div>
+
+        <div class="product-grid">
+
+            {% for product in products %}
+            <div class="product-card card-hover">
+
+                {% if product.Imagen %}
+                <img class="product-image" src="{{ product.Imagen.url }}">
+                {% else %}
+                <div class="product-image">
+                    <p>Sin imagen</p>
+                </div>
+                {% endif %}
+
+                {% if product.Rareza == 'comun' %}
+                <span class="tag gray">Común</span>
+                {% elif product.Rareza == 'rara' %}
+                <span class="tag blue">Rara</span>
+                {% elif product.Rareza == 'epica' %}
+                <span class="tag purple">Épica</span>
+                {% elif product.Rareza == 'legendaria' %}
+                <span class="tag gold">Legendaria</span>
+                {% endif %}
+
+                <h3>{{ product.Nombre }}</h3>
+                <p>{{ product.Descripcion }}</p>
+
+                <div class="product-footer">
+                    <span class="price">${{ product.Precio }}</span>
+                    <a href="{% url 'Productos' %}">Ver más →</a>
+                </div>
+
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="section-footer">
+            <a href="{% url 'Productos' %}">Ver todos los productos →</a>
+        </div>
+
+    </div>
+</section>
+
+<section class="cta">
+    <div class="container cta-content">
+
+        <h2>
+            “El ingenio sin límites es el mayor tesoro del hombre”
+        </h2>
+
+        <p>
+            Únete a nuestra comunidad y encuentra productos únicos.
+        </p>
+
+        <a href="{% url 'AnadirProducto' %}" class="btn-light">
+            Agregar un Producto
+        </a>
+
+    </div>
+</section>
+
+{% endblock %}
